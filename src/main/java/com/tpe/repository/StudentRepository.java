@@ -2,8 +2,11 @@ package com.tpe.repository;
 
 import com.tpe.domain.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /*
         SORU : @Repository veya @Service yerine @Component kullanirsam ne olur ??
@@ -25,4 +28,13 @@ import org.springframework.stereotype.Repository;
 @Repository // Opsiyonel , kod okunabilirligi
 public interface StudentRepository extends JpaRepository<Student, Long> {
     boolean existsByEmail(String email);
+
+    List<Student> findByLastName(String lastName);
+
+    @Query("SELECT s FROM Student s WHERE s.grade=:pGrade")
+    List<Student> findAllEqualsGrade(@Param("pGrade") Integer grade);
+
+    // yukardaki JPQL i Native SQL ile yazarsak :
+    @Query(value = "SELECT * FROM Student s WHERE s.grade=:pGrade", nativeQuery = true)
+    List<Student> findAllEqualsGradeWithSQL(@Param("pGrade") Integer grade);
 }
