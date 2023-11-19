@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -35,6 +37,10 @@ public class User {
     @JsonIgnore
     @OneToOne(mappedBy = "user")
     private Student student;
+
+    @JoinTable(name = "tbl_user_role", joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role>roles = new HashSet<>();
 
 
 
