@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +80,7 @@ public class StudentController {
 
     // Not: getStudentById RequestParam **********************
     @GetMapping("/query")  // http://localhost:8080/students/query?id=1   + GET
+    @PreAuthorize("hasRole('ADMIN')")//ROLE_
     public ResponseEntity<Student> getStudent(@RequestParam("id") Long id){
         Student student = studentService.findStudent(id);
         return ResponseEntity.ok(student);
